@@ -23,9 +23,9 @@ if (isset($_GET["txtUsername"])) {
     }
 } else if (isset($_GET["txtNascimento"])) {
 
-    $data = strtotime($_GET["txtBirthday"]);
+    $data = strtotime($_GET["txtNascimento"]);
     if ($data < 0) {
-        $mensagem = "This is not a valid date.";
+        $mensagem = "Esta não é uma data válida.";
     } else {
         $valido = "true";
         $mensagem = "";
