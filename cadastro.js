@@ -39,7 +39,6 @@ function isFormValid() {
             blnValid = blnValid && frmMain.elements[i].valid;
         }
     }
-
     return blnValid;
 }
 
