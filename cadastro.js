@@ -31,7 +31,6 @@ function validateField(oEvent) {
     };
     oXmlHttp.send(null);
 }
-;
 
 function isFormValid() {
     var frmMain = document.forms[0];

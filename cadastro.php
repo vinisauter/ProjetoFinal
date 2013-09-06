@@ -1,5 +1,4 @@
 <?php
-
 $valido = "false";
 $mensagem = "Ocorreu um erro desconhecido.";
 
