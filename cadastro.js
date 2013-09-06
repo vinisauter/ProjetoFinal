@@ -8,16 +8,18 @@ function validateField(oEvent) {
         if (oXmlHttp.readyState == 4) {
             if (oXmlHttp.status == 200) {
                 var arrInfo = oXmlHttp.responseText.split("||");
-                var imgErro = document.getElementById("imgErro" + txtField.id.substring(3));
+                var imgErro = document.getElementById("Erro" + txtField.id.substring(3));
                 var btnCadastro = document.getElementById("btnCadastro");
 
                 if (!eval(arrInfo[0])) {
-                    imgErro.title = arrInfo[1];
-                    imgErro.style.display = "";
+                    imgErro.innerHTML = ' ⨉' + arrInfo[1];
                     txtField.valid = false;
+                    txtField.style.border = "2px solid black";
+                    txtField.style.backgroundColor = "rgba(255,0,0,0.25)";
                 } else {
-                    imgErro.style.display = "none";
+                    imgErro.innerHTML = ' ✓';
                     txtField.valid = true;
+                    txtField.style.backgroundColor = "rgba(0,255,0,0.25)";
                 }
 
                 btnCadastro.disabled = !isFormValid();
