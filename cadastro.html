@@ -28,27 +28,23 @@
             <table>
                 <tr>
                     <td><label for="txtNome">Nome:</label></td>
-                    <td><input type="text" id="txtNome" name="txtNome" /></td>
+                    <td><input type="text" id="txtNome" name="txtNome" /><label id="ErroNome" for="txtNome"></label></td>
                 </tr>
                 <tr>
                     <td><label for="txtEmail">E-mail:</label></td>
-                    <td><input type="email" id="txtEmail" name="txtEmail" /><span id="ErroEmail"></span></td>
+                    <td><input type="email" id="txtEmail" name="txtEmail" /><label id="ErroEmail" for="txtEmail"></label></td>
                 </tr>
                 <tr>
                     <td><label for="txtUsername">Username:</label></td>
-                    <td><input type="text" id="txtUsername" name="txtUsername" /><label id="ErroUsername" for="txtUsername">test1</label></td>
+                    <td><input type="text" id="txtUsername" name="txtUsername" /><label id="ErroUsername" for="txtUsername"></label></td>
                 </tr>
                 <tr>
                     <td><label for="txtSenha1">Senha:</label></td>
-                    <td><input type="text" id="txtSenha1" name="txtSenha1" /><span id="ErroSenha1"></span></td>
-                </tr>
-                <tr>
-                    <td><label for="txtSenha2">Senha:</label></td>
-                    <td><input type="text" id="txtSenha2" name="txtSenha2" /><span id="ErroSenha2"></span></td>
+                    <td><input type="password" id="txtSenha1" name="txtSenha1" /><label id="ErroSenha1" for="txtSenha1"></label></td>
                 </tr>
                 <tr>
                     <td><label for="txtNascimento">Data de nascimento:</label></td>
-                    <td><input type="date" id="txtNascimento" name="txtNascimento" /><span id="ErroNascimento"></span></td>
+                    <td><input type="date" id="txtNascimento" name="txtNascimento" /><label id="ErroNascimento" for="txtNascimento"></label></td>
                 </tr>
                 <tr>
                     <td><label for="selSexo">Sexo:</label></td>
@@ -60,7 +56,7 @@
                     </td>
                 </tr>
             </table>
-            <input formnovalidate  type="submit" id="btnCadastro" value="Cadastrar!" />
+            <input type="submit" id="btnCadastro" value="Cadastrar!" />
         </form>
         
     </body>
