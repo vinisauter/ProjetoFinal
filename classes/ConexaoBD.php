@@ -94,6 +94,14 @@ class Conection {
         return $this->query;
     }
 
+    function gerarQueryBanco($TABLE, $PARAM = '*', $WHERE = '', $ORDERBY = '', $GROUPBY = '') {
+        $WHERE = ($WHERE != '') ? 'WHERE ' . $WHERE : '';
+        $ORDERBY = ($ORDERBY != '') ? 'ORDER BY ' . $ORDERBY : '';
+        $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
+        $sql = "SELECT {$PARAM} FROM {$TABLE} {$WHERE} {$GROUPBY} {$ORDERBY}";
+        return $this->execute($sql);
+    }
+
     /**
      * Retorna o id do ultimo elemento inserido
      *

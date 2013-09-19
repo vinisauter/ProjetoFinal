@@ -9,7 +9,6 @@ class UsuarioBD extends Conection {
     public $user_senha;
     public $user_sexo;
     public $user_datanasc;
-    
     protected $xmlRetorno;
     protected $usuarioDe;
     protected $ultimaData;
@@ -44,17 +43,19 @@ class UsuarioBD extends Conection {
     }
 
     private function geraXmlRetorno() {
-        $xml = "<?xml version = \"1.0\"?><chat>";
+        $xml = "<?xml version = \"1.0\"?><UsuarioBD>";
         while ($r = $this->fetchObject()) {
-            $xml .= "<mensagem>";
-            $xml .= "<de>{$r->de}</de>";
-            $xml .= "<para>{$r->para}</para>";
-            $xml .= "<datahora>{$r->datahora}</datahora>";
-            $xml .= "<datahoraf>{$r->datahora_f}</datahoraf>";
-            $xml .= "<texto>{$r->mensagem}</texto>";
-            $xml .= "</mensagem>";
+            $xml .= "<usuarios>";
+            $xml .= "<user_id>{$r->user_id}</user_id>";
+            $xml .= "<user_nome>{$r->user_nome}</user_nome>";
+            $xml .= "<user_nick>{$r->user_nick}</user_nick>";
+            $xml .= "<user_email>{$r->user_email}</user_email>";
+            $xml .= "<user_senha>{$r->user_senha}</user_senha>";
+            $xml .= "<user_sexo>{$r->user_sexo}</user_sexo>";
+            $xml .= "<user_datanasc>{$r->user_datanasc}</user_datanasc>";
+            $xml .= "</usuarios>";
         }
-        $xml .= "</chat>";
+        $xml .= "</UsuarioBD>";
         return $xml;
     }
 
@@ -66,54 +67,30 @@ class UsuarioBD extends Conection {
         $xmlDoc = new DOMDocument();
         $xmlDoc->loadXML($this->xml);
 
-        $mensagem = $xmlDoc->getElementsByTagName('texto');
-        $de = $xmlDoc->getElementsByTagName('de');
-        $para = $xmlDoc->getElementsByTagName('para');
-        foreach ($mensagem as $i => $m) {
-            if (!$this->insertMsg($de->item($i)->nodeValue, $para->item($i)->nodeValue, $m->nodeValue))
+        $usuarios = $xmlDoc->getElementsByTagName('usuarios');
+        
+        $user_id = $xmlDoc->getElementsByTagName('texto');
+        $user_nome = $xmlDoc->getElementsByTagName('texto');
+        $user_nick = $xmlDoc->getElementsByTagName('texto');
+        $user_email = $xmlDoc->getElementsByTagName('texto');
+        $user_senha = $xmlDoc->getElementsByTagName('texto');
+        $user_sexo = $xmlDoc->getElementsByTagName('texto');
+        $user_datanasc = $xmlDoc->getElementsByTagName('texto');
+
+
+        foreach ($usuarios as $i => $m) {
+            if (!$this->insertMsg(
+                    $user_id->item($i)->nodeValue, 
+                    $user_nome->item($i)->nodeValue, 
+                    $user_nick->item($i)->nodeValue, 
+                    $user_email->item($i)->nodeValue, 
+                    $user_senha->item($i)->nodeValue, 
+                    $user_sexo->item($i)->nodeValue, 
+                    $user_datanasc->item($i)->nodeValue,
+                    $m->nodeValue))
                 return false;
         }
         return true;
-    }
-
-}
-
-class UsuarioBDa {
-
-    public $user_id;
-    public $user_nome;
-    public $user_nick;
-    public $user_email;
-    public $user_senha;
-    public $user_sexo;
-    public $user_datanasc;
-    private $con;
-    // singleton instance 
-    private static $instance;
-
-    // private constructor function 
-    // to prevent external instantiation 
-    private function __construct($con = NULL) {
-        if ($con == NULL) {
-            $this->con = new Conection();
-        } else {
-            $this->con = $con;
-        }
-        return $this->con;
-    }
-
-    // getInstance method 
-    public static function getInstance() {
-        if (!self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
-    public function insereUsuario() {
-        $sql = "INSERT INTO usuarios(user_id, user_nome, user_nick, user_email, user_senha, user_sexo, user_datanasc) VALUES
-                            ('{$this->user_id}','{$this->user_nome}','{$this->user_nick}','{$this->user_email}','{$this->user_senha}','{$this->user_sexo}','{$this->user_datanasc}')";
-        $this->con->execute_query($sql);
     }
 
 }
