@@ -20,7 +20,7 @@
 
 <form method="post" action="index.html" class="login">
     <p>
-      <label for="login">Email:</label>
+      <label for="login">E-mail:</label>
       <input type="text" name="login" id="login" placeholder="exemplo@email.com">
     </p>
 
@@ -28,22 +28,20 @@
       <label for="password">Senha:</label>
       <input type="password" name="password" id="password" placeholder="**********">
     </p>
-
+    <input type="checkbox" id="lembrar"/> <label for="lembrar">Continuar conectado</label><br/>
+    <a href="index.html">Esqueceu a sua senha?</a>
     <p class="login-submit">
       <button type="submit" class="login-button">Login</button>
+      <button type="button" class="cadastro-button" onclick="location.href='cadastro.html'">Cadastrar</button>     
     </p>
-
-    <p class="forgot-password"><a href="index.html">Esqueceu a sua senha?</a></p>
  </form>
                 
             </header>
             
             <section>
-                <h3>
-                    <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+                <h3>Bem-vindo ao Profim. </h3>
 
-                <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
+                 <p> Texto blablabla  </p>
             </section>
         </div>
         <!--[if !IE]><script>fixScale(document);</script><![endif]-->

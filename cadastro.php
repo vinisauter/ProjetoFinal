@@ -48,17 +48,6 @@ if (isset($_GET["txtNome"])) {
         $valido = "true";
         $mensagem = "";
     }
-} else if (isset($_GET["txtNascimento"])) {
-    $data = $_GET["txtNascimento"];
-    if (strlen($data)>0) {
-        list ($ano, $mes, $dia) = explode('-', $data);
-        if (!checkdate($mes, $dia, $ano)) {
-            $mensagem = "Esta não é uma data válida.";
-        } else {
-            $valido = "true";
-            $mensagem = "";
-        }
-    }
-}
+} 
 echo "$valido||$mensagem";
 ?>
