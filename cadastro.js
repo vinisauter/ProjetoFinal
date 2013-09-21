@@ -3,7 +3,7 @@ function validateField(oEvent) {
     oEvent = oEvent || window.event;
     var txtField = oEvent.target || oEvent.srcElement;
     var oXmlHttp = zXmlHttp.createRequest();
-    oXmlHttp.open("get", "cadastro.php?" + txtField.name + "=" + encodeURIComponent(txtField.value), true);
+    oXmlHttp.open("get", "cadastroSubTrot.php?" + txtField.name + "=" + encodeURIComponent(txtField.value), true);
     oXmlHttp.onreadystatechange = function() {
         if (oXmlHttp.readyState == 4) {
             if (oXmlHttp.status == 200) {
@@ -51,21 +51,17 @@ window.onload = function() {
         var txtEmail = document.getElementById("txtEmail");
         var txtUsername = document.getElementById("txtUsername");
         var txtSenha1 = document.getElementById("txtSenha1");
-        var txtNascimento = document.getElementById("txtNascimento");
-
         var btnCadastro = document.getElementById("btnCadastro");
 
         txtNome.onchange = validateField;
         txtEmail.onchange = validateField;
         txtUsername.onchange = validateField;
         txtSenha1.onchange = validateField;
-        txtNascimento.onchange = validateField;
 
         txtNome.valid = false;
         txtEmail.valid = false;
         txtUsername.valid = false;
         txtSenha1.valid = false;
-        txtNascimento.valid = false;
 
         btnCadastro.disabled = true;
     }

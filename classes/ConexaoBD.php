@@ -1,6 +1,6 @@
 <?php
 
-class Conection {
+class ConexaoBD {
 
     protected $host;
     protected $user;
@@ -98,8 +98,8 @@ class Conection {
         $WHERE = ($WHERE != '') ? 'WHERE ' . $WHERE : '';
         $ORDERBY = ($ORDERBY != '') ? 'ORDER BY ' . $ORDERBY : '';
         $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
-        $sql = "SELECT {$PARAM} FROM {$TABLE} {$WHERE} {$GROUPBY} {$ORDERBY}";
-        return $this->execute($sql);
+        $this->query = "SELECT {$PARAM} FROM {$TABLE} {$WHERE} {$GROUPBY} {$ORDERBY}";
+        return $this->execute($this->query);
     }
 
     /**
@@ -130,6 +130,141 @@ class Conection {
 
     function getError() {
         return $this->error;
+    }
+
+}
+
+//------------------------------------------------------------------------------
+
+class UsuarioBD extends ConexaoBD {
+
+    public $user_id;
+    public $user_nome;
+    public $user_nick;
+    public $user_email;
+    public $user_senha;
+    public $user_sexo;
+    public $user_datanasc;
+    protected $xmlRetorno;
+    protected $xml;
+    // singleton instance 
+    private static $instance;
+
+//    // getInstance method 
+//    public static function getInstance() {
+//
+//        if (!self::$instance) {
+//            self::$instance = new self();
+//        }
+//
+//        return self::$instance;
+//    }
+
+    public function insereUsuarioP($user_id, $user_nome, $tuser_nick, $user_email, $user_senha, $user_sexo, $user_datanasc) {
+        $this->query = "INSERT INTO usuarios(user_id, user_nome, user_nick, user_email, user_senha, user_sexo, user_datanasc) VALUES
+                            ('{$user_id}','{$user_nome}','{$tuser_nick}','{$user_email}','{$user_senha}','{$user_sexo}','{$user_datanasc}')";
+        return $this->execute($this->query);
+    }
+
+    public function insereUsuario() {
+        $this->query = "INSERT INTO usuarios(user_id, user_nome, user_nick, user_email, user_senha, user_sexo, user_datanasc) VALUES
+                            ('{$this->user_id}','{$this->user_nome}','{$this->user_nick}','{$this->user_email}','{$this->user_senha}','{$this->user_sexo}','{$this->user_datanasc}')";
+        return $this->execute($this->query);
+    }
+
+    public function existeParametroEmBD($PARAM, $VALUE) {
+        $this->query = "SELECT  `" . $PARAM . "`  FROM usuarios WHERE  `" . $PARAM . "` =  '" . $VALUE . "'";
+        $this->execute($this->query);
+        return $this->fetchObject();
+    }
+
+    function getUsuarioBanco($PARAM = '*', $WHERE = '', $ORDERBY = '', $GROUPBY = '') {
+        $WHERE = ($WHERE != '') ? 'WHERE ' . $WHERE : '';
+        $ORDERBY = ($ORDERBY != '') ? 'ORDER BY ' . $ORDERBY : '';
+        $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
+        $this->query = "SELECT {$PARAM} FROM usuarios {$WHERE} {$GROUPBY} {$ORDERBY}";
+        $this->execute($this->query);
+        return $this->geraXmlRetorno();
+    }
+
+    private function geraXmlRetorno() {
+        $xml = "<?xml version = \"1.0\"?><UsuarioBD>";
+        while ($r = $this->fetchObject()) {
+            $xml .= "<usuarios>";
+            $xml .= "<user_id>{$r->user_id}</user_id>";
+            $xml .= "<user_nome>{$r->user_nome}</user_nome>";
+            $xml .= "<user_nick>{$r->user_nick}</user_nick>";
+            $xml .= "<user_email>{$r->user_email}</user_email>";
+            $xml .= "<user_senha>{$r->user_senha}</user_senha>";
+            $xml .= "<user_sexo>{$r->user_sexo}</user_sexo>";
+            $xml .= "</usuarios>";
+        }
+        $xml .= "</UsuarioBD>";
+        return $xml;
+    }
+
+    public function setMensagem() {
+        return $this->parseXml();
+    }
+
+    private function parseXml() {
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->loadXML($this->xml);
+
+        $usuarios = $xmlDoc->getElementsByTagName('usuarios');
+
+        $user_id = $xmlDoc->getElementsByTagName('user_id');
+        $user_nome = $xmlDoc->getElementsByTagName('user_nome');
+        $user_nick = $xmlDoc->getElementsByTagName('user_nick');
+        $user_email = $xmlDoc->getElementsByTagName('user_email');
+        $user_senha = $xmlDoc->getElementsByTagName('user_senha');
+        $user_sexo = $xmlDoc->getElementsByTagName('user_sexo');
+        $user_datanasc = $xmlDoc->getElementsByTagName('user_datanasc');
+
+
+        foreach ($usuarios as $i => $m) {
+            if (!$this->insereUsuarioP(
+                            $user_id->item($i)->nodeValue, $user_nome->item($i)->nodeValue, $user_nick->item($i)->nodeValue, $user_email->item($i)->nodeValue, $user_senha->item($i)->nodeValue, $user_sexo->item($i)->nodeValue, $user_datanasc->item($i)->nodeValue))
+                return false;
+        }
+        return true;
+    }
+
+}
+
+//------------------------------------------------------------------------------
+
+class MensagemBD extends ConexaoBD {
+
+    public $msg_id;
+    public $msg_user_id;
+    public $msg_texto;
+
+    public function insereMensagem() {
+        $this->query = "INSERT INTO `mensagem`(`msg_id`, `msg_user_id`, `msg_texto`) VALUES 
+                            ('{$this->msg_id}','{$this->msg_user_id}','{$this->msg_texto}')";
+        return $this->execute($this->query);
+    }
+
+    function getMensagemBanco($PARAM = '*', $WHERE = '', $ORDERBY = '', $GROUPBY = '') {
+        $WHERE = ($WHERE != '') ? 'WHERE ' . $WHERE : '';
+        $ORDERBY = ($ORDERBY != '') ? 'ORDER BY ' . $ORDERBY : '';
+        $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
+        $this->query = "SELECT {$PARAM} FROM mensagem {$WHERE} {$GROUPBY} {$ORDERBY}";
+        return $this->execute($this->query);
+    }
+
+    private function geraXmlRetorno() {
+        $xml = "<?xml version = \"1.0\"?><MensagemBD>";
+        while ($r = $this->fetchObject()) {
+            $xml .= "<mensagem>";
+            $xml .= "<msg_id>{$r->msg_id}</msg_id>";
+            $xml .= "<msg_user_id>{$r->msg_user_id}</msg_user_id>";
+            $xml .= "<msg_texto>{$r->msg_texto}</msg_texto>";
+            $xml .= "</mensagem>";
+        }
+        $xml .= "</MensagemBD>";
+        return $xml;
     }
 
 }

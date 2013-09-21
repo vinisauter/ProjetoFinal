@@ -1,4 +1,5 @@
 <?php
+
 $valido = "false";
 $mensagem = "Ocorreu um erro desconhecido.";
 
@@ -10,33 +11,27 @@ if (isset($_GET["txtNome"])) {
         $mensagem = "";
     }
 } else if (isset($_GET["txtEmail"])) {
-    //TODO: verificar em bd
-    $emails = array();
-    $emails[] = "andre@hotmail.com";
-    $emails[] = "vinicius@gmail.com";
-    $emails[] = "renan@gmail.com";
-    $emails[] = "forebis@gmail.com";
+    //user_id, user_nome, user_nick, user_email, user_senha, user_sexo, user_datanasc
+    require_once './classes/ConexaoBD.php';
+    $userBD = new UsuarioBD();
 
-    if (in_array($_GET["txtEmail"], $emails)) {
-        $mensagem = "Este e-mail já esta cadastrado.";
-    } else if (!filter_var($_GET["txtEmail"], FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($_GET["txtEmail"], FILTER_VALIDATE_EMAIL)) {
         $mensagem = "Este endereço de e-mail não é válido";
+    } else if ($userBD->existeParametroEmBD('user_email', $_GET["txtEmail"])) {
+        $mensagem = "Este e-mail já esta cadastrado.";
     } else {
         $valido = "true";
         $mensagem = "";
     }
 } else if (isset($_GET["txtUsername"])) {
-    //TODO: verificar em bd
-    $usernames = array();
-    $usernames[] = "Andre";
-    $usernames[] = "Vinicius";
-    $usernames[] = "Renan";
-    $usernames[] = "Forebis";
+    //user_id, user_nome, user_nick, user_email, user_senha, user_sexo, user_datanasc
+    require_once './classes/ConexaoBD.php';
+    $userBD = new UsuarioBD();
 
-    if (in_array($_GET["txtUsername"], $usernames)) {
-        $mensagem = "Este nome de usuário já existe. Por favor, escolha outro.";
-    } else if (strlen($_GET["txtUsername"]) < 8) {
+    if (strlen($_GET["txtUsername"]) < 8) {
         $mensagem = "Nome usuário deve ter pelo menos 8 caracteres.";
+    } else if ($userBD->existeParametroEmBD('user_nick', $_GET["txtUsername"])) {
+        $mensagem = "Este nome de usuário já existe. Por favor, escolha outro.";
     } else {
         $valido = "true";
         $mensagem = "";
@@ -48,6 +43,6 @@ if (isset($_GET["txtNome"])) {
         $valido = "true";
         $mensagem = "";
     }
-} 
+}
 echo "$valido||$mensagem";
 ?>

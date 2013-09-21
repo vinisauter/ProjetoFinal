@@ -46,6 +46,10 @@
         </div>
         <!--[if !IE]><script>fixScale(document);</script><![endif]-->
         <?php
+        require_once './classes/ConexaoBD.php';
+        $userBD = new UsuarioBD();
+        
+        var_dump($userBD->getUsuarioBanco());
         ?>
     </body>
 </html>

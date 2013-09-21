@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-        
+
         <link rel="stylesheet" href="stylesheets/styles.css">
         <link rel="stylesheet" href="stylesheets/pygment_trac.css">
         <script src="javascripts/scale.fix.js"></script>
@@ -20,11 +20,21 @@
         <!--[if lt IE 9]>
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        <script>
+            function ajax() {
+                $.post('cadastroexec.php',
+                       $('#form').serialize(),
+                       function(r){
+                           alert(r.retorno);
+                       },'json');
+            }
+        </script>
     </head>
+
     <body>
-        <h1>Cadastro!</h1>
+        <h1 id="h1">Cadastro!</h1>
         <p>Por favor, preencha as informações a seguir.</p>
-        <form method="post" action="index.html">
+        <form method="post" id="form">
             <table>
                 <tr>
                     <td><label for="txtNome">Nome:</label></td>
@@ -43,21 +53,17 @@
                     <td><input type="password" id="txtSenha1" name="txtSenha1" /><label id="ErroSenha1" for="txtSenha1"></label></td>
                 </tr>
                 <tr>
-                    <td><label for="txtNascimento">Data de nascimento:</label></td>
-                    <td><input type="date" id="txtNascimento" name="txtNascimento" /><label id="ErroNascimento" for="txtNascimento"></label></td>
-                </tr>
-                <tr>
                     <td><label for="selSexo">Sexo:</label></td>
                     <td>
                         <select id="selSexo" name="selSexo">
-                            <option>M</option>
-                            <option>F</option>
+                            <option value="M">M</option>
+                            <option value="F">F</option>
                         </select>
                     </td>
                 </tr>
             </table>
-            <input type="submit" id="btnCadastro" value="Cadastrar!" />
+            <input type="button" onclick="ajax();" id="btnCadastro" value="Cadastrar!" />
         </form>
-        
+
     </body>
 </html>
