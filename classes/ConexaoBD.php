@@ -160,47 +160,50 @@ class UsuarioBD extends ConexaoBD {
 //        return self::$instance;
 //    }
 
-    public function insereUsuarioP($user_id, $user_nome, $tuser_nick, $user_email, $user_senha, $user_sexo, $user_datanasc) {
-        $this->query = "INSERT INTO usuarios(user_id, user_nome, user_nick, user_email, user_senha, user_sexo, user_datanasc) VALUES
-                            ('{$user_id}','{$user_nome}','{$tuser_nick}','{$user_email}','{$user_senha}','{$user_sexo}','{$user_datanasc}')";
+    public function insereUsuarioP($user_nome, $user_nick, $user_email, $user_senha, $user_sexo) {
+        
+        $this->query = "INSERT INTO `usuarios`(`user_nome`, `user_nick`, `user_email`, `user_senha`, `user_sexo`) VALUES 
+            ('{$user_nome}','{$user_nick}','{$user_email}','{$user_senha}','{$user_sexo}')";
+        $this->query = "INSERT INTO usuarios( user_nome, user_nick, user_email, user_senha, user_sexo) VALUES
+                            ('{$user_nome}','{$user_nick}','{$user_email}','{$user_senha}','{$user_sexo}')";
         return $this->execute($this->query);
     }
 
     public function insereUsuario() {
-        $this->query = "INSERT INTO usuarios(user_id, user_nome, user_nick, user_email, user_senha, user_sexo, user_datanasc) VALUES
-                            ('{$this->user_id}','{$this->user_nome}','{$this->user_nick}','{$this->user_email}','{$this->user_senha}','{$this->user_sexo}','{$this->user_datanasc}')";
+        $this->query = "INSERT INTO usuarios(user_nome, user_nick, user_email, user_senha, user_sexo) VALUES
+               ('{$this->user_nome}','{$this->user_nick}','{$this->user_email}','{$this->user_senha}','{$this->user_sexo}')";
         return $this->execute($this->query);
     }
 
     public function existeParametroEmBD($PARAM, $VALUE) {
-        $this->query = "SELECT  `" . $PARAM . "`  FROM usuarios WHERE  `" . $PARAM . "` =  '" . $VALUE . "'";
+        $this->query = "SELECT  `" . $PARAM . "`  FROM usuarios WHERE  `" . $PARAM . "` =  '" . $VALUE . "' LIMIT 0 , 1";
         $this->execute($this->query);
         return $this->fetchObject();
     }
 
-    function getUsuarioBanco($PARAM = '*', $WHERE = '', $ORDERBY = '', $GROUPBY = '') {
+    function getUsuarioBanco($PARAM = '*', $WHERE = '', $ORDERBY = '', $GROUPBY = '', $LIMIT = '50') {
         $WHERE = ($WHERE != '') ? 'WHERE ' . $WHERE : '';
         $ORDERBY = ($ORDERBY != '') ? 'ORDER BY ' . $ORDERBY : '';
         $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
-        $this->query = "SELECT {$PARAM} FROM usuarios {$WHERE} {$GROUPBY} {$ORDERBY}";
+        $this->query = "SELECT {$PARAM} FROM usuarios {$WHERE} {$GROUPBY} {$ORDERBY} LIMIT 0 ,{$LIMIT}";
         $this->execute($this->query);
         return $this->geraXmlRetorno();
     }
 
-    private function geraXmlRetorno() {
-        $xml = "<?xml version = \"1.0\"?><UsuarioBD>";
+    private function geraXmlRetorno() {errado
+        $xmlOb = '<UsuarioBD>';
         while ($r = $this->fetchObject()) {
-            $xml .= "<usuarios>";
-            $xml .= "<user_id>{$r->user_id}</user_id>";
-            $xml .= "<user_nome>{$r->user_nome}</user_nome>";
-            $xml .= "<user_nick>{$r->user_nick}</user_nick>";
-            $xml .= "<user_email>{$r->user_email}</user_email>";
-            $xml .= "<user_senha>{$r->user_senha}</user_senha>";
-            $xml .= "<user_sexo>{$r->user_sexo}</user_sexo>";
-            $xml .= "</usuarios>";
+            $xmlOb .= '<usuarios>';
+            $xmlOb .= '<user_id>'.$r->user_id.'</user_id>';
+            $xmlOb .= '<user_nome>'.$r->user_nome.'</user_nome>';
+            $xmlOb .= '<user_nick>'.$r->user_nick.'</user_nick>';
+            $xmlOb .= '<user_email>'.$r->user_email.'</user_email>';
+            $xmlOb .= '<user_senha>'.$r->user_senha.'</user_senha>';
+            $xmlOb .= '<user_sexo>'.$r->user_sexo.'</user_sexo>';
+            $xmlOb .= '</usuarios>';
         }
-        $xml .= "</UsuarioBD>";
-        return $xml;
+        $xmlOb .= '</UsuarioBD>';
+        return $xmlOb;
     }
 
     public function setMensagem() {
@@ -241,8 +244,8 @@ class MensagemBD extends ConexaoBD {
     public $msg_texto;
 
     public function insereMensagem() {
-        $this->query = "INSERT INTO `mensagem`(`msg_id`, `msg_user_id`, `msg_texto`) VALUES 
-                            ('{$this->msg_id}','{$this->msg_user_id}','{$this->msg_texto}')";
+        $this->query = "INSERT INTO `mensagem`(`msg_user_id`, `msg_texto`) VALUES 
+                            ('{$this->msg_user_id}','{$this->msg_texto}')";
         return $this->execute($this->query);
     }
 

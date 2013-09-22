@@ -23,10 +23,13 @@
         <script>
             function ajax() {
                 $.post('cadastroexec.php',
-                       $('#form').serialize(),
-                       function(r){
-                           alert(r.retorno);
-                       },'json');
+                        $('#form').serialize(),
+                        function(r) {
+                            if (r.inserido)
+                                window.location.href = "./perfil.html";
+                            else
+                                alert(r.erro);
+                        }, 'json');
             }
         </script>
     </head>
