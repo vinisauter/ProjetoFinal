@@ -63,13 +63,7 @@
                                         data: qry,
                                         success: function(html) {
                                             if (html == 'true') {
-                                                $("#loader").hide();
-                                                $("#instantform").fadeOut(1100, 'swing');
-                                                $("#results").append('Sucesso! Logado como <strong>' + usernum + '</strong>!!');
-                                                $("#loader > img").attr("src", "images/checkmark.png");
-                                                $("#loader").fadeIn(800);
-//TODO:		
-window.location.href = "./perfil.html";  
+window.location.href = "./perfil.php";  
                                             }
                                             else {
                                                 // 

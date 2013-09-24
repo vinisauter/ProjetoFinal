@@ -12,11 +12,14 @@ if ($_POST) {
     if ($userBD->existeParametroEmBD('user_nick', $usuario)) {
         $user = $userBD->getUsuarioBanco('*', "user_nick = '{$usuario}'", '', '', '1');        
         //die($user->user_senha);
-        if ($user->user_senha == $senha)
+        if ($user->user_senha == $senha){
+            setcookie('userBD', $userBD->geraXmlRetorno($user), time()+3600*24*1);
             die('true');
-        else
+        }else
+            setcookie('userBD', null);
             die('false');
     } else {
+        setcookie('userBD', null);
         die('false');
     }
 }

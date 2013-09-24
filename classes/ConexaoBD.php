@@ -161,7 +161,7 @@ class UsuarioBD extends ConexaoBD {
 //    }
 
     public function insereUsuarioP($user_nome, $user_nick, $user_email, $user_senha, $user_sexo) {
-        
+
         $this->query = "INSERT INTO `usuarios`(`user_nome`, `user_nick`, `user_email`, `user_senha`, `user_sexo`) VALUES 
             ('{$user_nome}','{$user_nick}','{$user_email}','{$user_senha}','{$user_sexo}')";
         $this->query = "INSERT INTO usuarios( user_nome, user_nick, user_email, user_senha, user_sexo) VALUES
@@ -188,49 +188,36 @@ class UsuarioBD extends ConexaoBD {
         $this->query = "SELECT {$PARAM} FROM usuarios {$WHERE} {$GROUPBY} {$ORDERBY} LIMIT 0 ,{$LIMIT}";
         $this->execute($this->query);
         return $this->fetchObject();
-        return $this->geraXmlRetorno();
     }
 
-    private function geraXmlRetorno() {
+    public function geraXmlRetorno($UsuarioBD) {
         $xmlOb = '<UsuarioBD>';
-        while ($r = $this->fetchObject()) {
-            $xmlOb .= '<usuarios>';
-            $xmlOb .= '<user_id>'.$r->user_id.'</user_id>';
-            $xmlOb .= '<user_nome>'.$r->user_nome.'</user_nome>';
-            $xmlOb .= '<user_nick>'.$r->user_nick.'</user_nick>';
-            $xmlOb .= '<user_email>'.$r->user_email.'</user_email>';
-            $xmlOb .= '<user_senha>'.$r->user_senha.'</user_senha>';
-            $xmlOb .= '<user_sexo>'.$r->user_sexo.'</user_sexo>';
-            $xmlOb .= '</usuarios>';
-        }
+        $xmlOb .= '<usuarios>';
+        $xmlOb .= '<user_id>' . $UsuarioBD->user_id . '</user_id>';
+        $xmlOb .= '<user_nome>' . $UsuarioBD->user_nome . '</user_nome>';
+        $xmlOb .= '<user_nick>' . $UsuarioBD->user_nick . '</user_nick>';
+        $xmlOb .= '<user_email>' . $UsuarioBD->user_email . '</user_email>';
+        $xmlOb .= '<user_senha>' . $UsuarioBD->user_senha . '</user_senha>';
+        $xmlOb .= '<user_sexo>' . $UsuarioBD->user_sexo . '</user_sexo>';
+        $xmlOb .= '</usuarios>';
         $xmlOb .= '</UsuarioBD>';
         $this->xml = $xmlOb;
         return $xmlOb;
     }
 
-    public function setMensagem() {
-        return $this->parseXml();
-    }
+    public function getUsuarioFromXml($xmlUser) {
+        @header('Content-Type: text/html; charset=utf-8');
+#carrega o arquivo XML e retornando um Array
+        $xml = simplexml_load_string($xmlUser);
 
-    private function parseXml() {
-        $xmlDoc = new DOMDocument();
-        $xmlDoc->loadXML($this->xml);
-
-        $usuarios = $xmlDoc->getElementsByTagName('usuarios');
-
-        $user_id = $xmlDoc->getElementsByTagName('user_id');
-        $user_nome = $xmlDoc->getElementsByTagName('user_nome');
-        $user_nick = $xmlDoc->getElementsByTagName('user_nick');
-        $user_email = $xmlDoc->getElementsByTagName('user_email');
-        $user_senha = $xmlDoc->getElementsByTagName('user_senha');
-        $user_sexo = $xmlDoc->getElementsByTagName('user_sexo');
-        $user_datanasc = $xmlDoc->getElementsByTagName('user_datanasc');
-
-
-        foreach ($usuarios as $i => $m) {
-            if (!$this->insereUsuarioP(
-                            $user_id->item($i)->nodeValue, $user_nome->item($i)->nodeValue, $user_nick->item($i)->nodeValue, $user_email->item($i)->nodeValue, $user_senha->item($i)->nodeValue, $user_sexo->item($i)->nodeValue, $user_datanasc->item($i)->nodeValue))
-                return false;
+        foreach ($xml->usuarios as $usuario) {
+            $this->user_id = $usuario->user_id;
+            $this->user_nome = $usuario->user_nome;
+            $this->user_nick = $usuario->user_nick;
+            $this->user_email = $usuario->user_email;
+            $this->user_senha = $usuario->user_senha;
+            $this->user_sexo = $usuario->user_sexo;
+            $this->user_datanasc = $usuario->user_datanasc;
         }
         return true;
     }
