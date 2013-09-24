@@ -187,10 +187,11 @@ class UsuarioBD extends ConexaoBD {
         $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
         $this->query = "SELECT {$PARAM} FROM usuarios {$WHERE} {$GROUPBY} {$ORDERBY} LIMIT 0 ,{$LIMIT}";
         $this->execute($this->query);
+        return $this->fetchObject();
         return $this->geraXmlRetorno();
     }
 
-    private function geraXmlRetorno() {errado
+    private function geraXmlRetorno() {
         $xmlOb = '<UsuarioBD>';
         while ($r = $this->fetchObject()) {
             $xmlOb .= '<usuarios>';
@@ -203,6 +204,7 @@ class UsuarioBD extends ConexaoBD {
             $xmlOb .= '</usuarios>';
         }
         $xmlOb .= '</UsuarioBD>';
+        $this->xml = $xmlOb;
         return $xmlOb;
     }
 

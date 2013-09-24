@@ -10,9 +10,9 @@ if ($_POST) {
     //user_nome, user_nick, user_email, user_senha, user_sexo
     
     if ($userBD->existeParametroEmBD('user_nick', $usuario)) {
-        $xmluser = $userBD->getUsuarioBanco('*', "user_nick = '{$usuario}'", '', '', '1');
-        die($xmluser);
-        if ($xmluser->getElementsByTagName('user_senha') == $senha)
+        $user = $userBD->getUsuarioBanco('*', "user_nick = '{$usuario}'", '', '', '1');        
+        //die($user->user_senha);
+        if ($user->user_senha == $senha)
             die('true');
         else
             die('false');

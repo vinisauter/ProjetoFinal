@@ -28,8 +28,8 @@ if (isset($_GET["txtNome"])) {
     require_once './classes/ConexaoBD.php';
     $userBD = new UsuarioBD();
 
-    if (strlen($_GET["txtUsername"]) < 6) {
-        $mensagem = "Nome usuário deve ter pelo menos 8 caracteres.";
+    if (strlen($_GET["txtUsername"]) < 4) {
+        $mensagem = "Nome usuário deve ter pelo menos 4 caracteres.";
     } else if ($userBD->existeParametroEmBD('user_nick', $_GET["txtUsername"])) {
         $mensagem = "Este nome de usuário já existe. Por favor, escolha outro.";
     } else {

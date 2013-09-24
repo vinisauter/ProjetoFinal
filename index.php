@@ -68,6 +68,8 @@
                                                 $("#results").append('Sucesso! Logado como <strong>' + usernum + '</strong>!!');
                                                 $("#loader > img").attr("src", "images/checkmark.png");
                                                 $("#loader").fadeIn(800);
+//TODO:		
+window.location.href = "./perfil.html";  
                                             }
                                             else {
                                                 // 
