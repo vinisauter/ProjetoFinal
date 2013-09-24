@@ -20,12 +20,78 @@ if (isset($_COOKIE['userBD'])) {
         <!--[if lt IE 9]>
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                //alert('ola');
+
+            });
+
+            function postMsg() {
+                $('<input />').attr('type', 'hidden')
+                        .attr('name', 'msg_user_id')
+                        .attr('value', "<?php echo $userBD->user_id ?>")
+                        .appendTo('#form');
+
+                $.post('menssagensexec.php',
+                        $('#form').serialize(),
+                        function(r) {
+                            if (r.inserido)
+                                alert('Ok');
+                            else
+                                alert(r.erro);
+                        }, 'json');
+            }
+
+            function logout()
+            {
+                document.cookie = 'userBD=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+                window.location.href = "./index.php";
+            }
+
+            function buscarUsuario() {
+                $.post('buscaUsuario.php',
+                      $('#tfnewsearch').serialize(),
+                    function(r) {
+                      if (r.busca)
+                        mostraUsuarios(r.busca);
+                  else
+                    alert(r.erro);
+                }, 'json');
+            }
+            function mostraUsuarios(usuarios) {
+                var d = document;
+                var b = d.getElementsByTagName('body')[0];
+                var dvs = d.createElement("div");
+                var bt = d.createElement("button");
+                var t = document.createTextNode("Fechar");
+                var texto = document.createTextNode(usuarios);
+                dvs.appendChild(texto);
+                bt.appendChild(t);
+                dvs.appendChild(bt);
+                dvs.className = "test";
+                b.appendChild(dvs);
+                dvs.onblur=function(e){
+                    op(this.parentNode)
+                }
+                function op(t){
+                    dvs.style.display="none";
+                }
+                
+            }
+
+            var auto_refresh = setInterval(
+                    function()
+                    {
+                        $('#mensagens').load('menssagensexec.php').fadeIn("slow");
+                    }, 10000);
+
+        </script>
     </head>
     <body>
         <div id="tfheader">
-            <form id="tfnewsearch" method="get" action="">
+            <form id="tfnewsearch" method="post" action="">
                 <input type="text" class="tftextinput" name="q" size="21" maxlength="120">
-                <input type="submit" value="buscar"  onclick="ajax();" class="tfbutton">
+                <input type="button" value="buscar"  onclick="buscarUsuario();" class="tfbutton">
             </form>
             <div class="tfclear"></div>
         </div>
@@ -39,62 +105,19 @@ if (isset($_COOKIE['userBD'])) {
                 </ul>
             </header>
             <section>
-                <h3>
-                    <a class="anchor"><span class=""></span></a>Timeline</h3>
-
-                <pre><code>
-$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-                </code></pre>
+                <h3>Timeline</h3>
+                <form method="post" id="form">
+                    <input type="text" id="txtMsg" name="txtMsg" placeholder="No que você está pensando?"
+                           style=" background-color: transparent; border-style: solid; border-width: 0px 0px 1px 0px; border-color: darkred; width: 100%;"/>
+                    <input type="hidden" name="tipo" value="addMSG">
+                    <input type="button" onclick="postMsg();" id="btPostar" name="btPostar" value="Publicar"
+                           style=""/>
+                </form>
+                <div class="mensagens" id="mensagens" onload="ajax();">
+                    <pre>Teste msg</pre>
+                </div>
             </section>
         </div>
         <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-        <script type="text/javascript">
-                    $(document).ready(function() {
-                        //alert('ola');
-
-                    });
-                    function logout()
-                    {
-                        document.cookie = 'userBD=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
-                        window.location.href = "./index.php";
-                    }
-
-var page = "online.php";
-function ajax(url,target) {
-  // native XMLHttpRequest object
-  document.getElementById(target).innerHTML = 'Loading...';
-  if (window.XMLHttpRequest) {
-    req = new XMLHttpRequest();
-    req.onreadystatechange = function() {ajaxDone(target);};
-    req.open("GET", url, true);
-    req.send(null);
-    // IE/Windows ActiveX version
-  } else if (window.ActiveXObject) {
-    req = new ActiveXObject("Microsoft.XMLDOM");
-    if (req) {
-      req.onreadystatechange = function() {ajaxDone(target);};
-      req.open("GET", url, true);
-      req.send(null);
-    }
-  }
-  setTimeout("ajax(page,'scriptoutput')", 5000);
-}
-
-function ajaxDone(target) {
-  // only if req is "loaded"
-  if (req.readyState == 4) {
-    // only if "OK"
-    if (req.status == 200 || req.status == 304) {
-      results = req.responseText;
-      document.getElementById(target).innerHTML = results;
-    } else {
-      document.getElementById(target).innerHTML="ajax error:\n" +
-      req.statusText;
-    }
-  }
-}
-        </script>
     </body>
 </html>

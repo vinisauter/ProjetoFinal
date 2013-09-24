@@ -63,7 +63,7 @@
                                         data: qry,
                                         success: function(html) {
                                             if (html == 'true') {
-window.location.href = "./perfil.php";  
+                                                window.location.href = "./perfil.php";
                                             }
                                             else {
                                                 // 

@@ -207,7 +207,6 @@ class UsuarioBD extends ConexaoBD {
 
     public function getUsuarioFromXml($xmlUser) {
         @header('Content-Type: text/html; charset=utf-8');
-#carrega o arquivo XML e retornando um Array
         $xml = simplexml_load_string($xmlUser);
 
         foreach ($xml->usuarios as $usuario) {
@@ -231,10 +230,17 @@ class MensagemBD extends ConexaoBD {
     public $msg_id;
     public $msg_user_id;
     public $msg_texto;
+    public $user_nick;
 
     public function insereMensagem() {
         $this->query = "INSERT INTO `mensagem`(`msg_user_id`, `msg_texto`) VALUES 
                             ('{$this->msg_user_id}','{$this->msg_texto}')";
+        return $this->execute($this->query);
+    }
+
+    public function insereMensagemP($msg_user_id, $msg_texto) {
+        $this->query = "INSERT INTO `mensagem`(`msg_user_id`, `msg_texto`) VALUES 
+                            ('{$msg_user_id}','{$msg_texto}')";
         return $this->execute($this->query);
     }
 
@@ -243,7 +249,18 @@ class MensagemBD extends ConexaoBD {
         $ORDERBY = ($ORDERBY != '') ? 'ORDER BY ' . $ORDERBY : '';
         $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
         $this->query = "SELECT {$PARAM} FROM mensagem {$WHERE} {$GROUPBY} {$ORDERBY}";
-        return $this->execute($this->query);
+        $this->execute($this->query);
+        return $this->geraXmlRetorno();
+    }
+
+    public function getTodasMensagemBanco() {
+        $msgs = '';
+        $this->query = "SELECT * FROM usuarios u INNER JOIN mensagem m ON (m.msg_user_id = u.user_id) ORDER BY m.msg_id DESC";
+        $this->execute($this->query);
+        while($ret = $this->fetchObject()) {
+            $msgs .= '<pre>'.$ret->user_nick.': '.$ret->msg_texto.'</pre>';
+        }
+        return $msgs;
     }
 
     private function geraXmlRetorno() {
