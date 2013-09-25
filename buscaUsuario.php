@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+
+=======
+>>>>>>> branch 'master' of https://github.com/vinisauter/ProjetoFinal.git
 <?php
 
 require_once './classes/ConexaoBD.php';
