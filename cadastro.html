@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html  lang="pt-br">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>Projeto Final</title>
+
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+        <link rel="stylesheet" href="stylesheets/styles.css">
+        <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+        <script src="javascripts/scale.fix.js"></script>
+
+        <script type="text/javascript" src="javascripts/zxml.js"></script>
+        <script type="text/javascript" src="cadastro.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <!--[if lt IE 9]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <script>
+            function ajax() {
+                //teste
+                $.post('cadastroexec.php',
+                        $('#form').serialize(),
+                        function(r) {
+                            if (r.inserido)
+                                window.location.href = "./perfil.php";
+                            else
+                                alert(r.erro);
+                        }, 'json');
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1 id="h1">Cadastro!</h1>
+        <p>Por favor, preencha as informações a seguir.</p>
+        <form method="post" id="form">
+            <table>
+                <tr>
+                    <td><label for="txtNome">Nome:</label></td>
+                    <td><input type="text" id="txtNome" name="txtNome" /><label id="ErroNome" for="txtNome"></label></td>
+                </tr>
+                <tr>
+                    <td><label for="txtEmail">E-mail:</label></td>
+                    <td><input type="email" id="txtEmail" name="txtEmail" placeholder="exemplo@email.com"/><label id="ErroEmail" for="txtEmail"></label></td>
+                </tr>
+                <tr>
+                    <td><label for="txtUsername">Username:</label></td>
+                    <td><input type="text" id="txtUsername" name="txtUsername" /><label id="ErroUsername" for="txtUsername"></label></td>
+                </tr>
+                <tr>
+                    <td><label for="txtSenha1">Senha:</label></td>
+                    <td><input type="password" id="txtSenha1" name="txtSenha1" /><label id="ErroSenha1" for="txtSenha1"></label></td>
+                </tr>
+                <tr>
+                    <td><label for="selSexo">Sexo:</label></td>
+                    <td>
+                        <select id="selSexo" name="selSexo">
+                            <option value="M">M</option>
+                            <option value="F">F</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="button" onclick="ajax();" id="btnCadastro" value="Cadastrar!" />
+        </form>
+
+    </body>
+</html>
