@@ -8,31 +8,11 @@
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-        <script>
-            $(function() {
-                $.datepicker.regional['pt'] = {
-                    dateFormat: 'dd/mm/yy',
-                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
-                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    nextText: 'Próximo',
-                    prevText: 'Anterior'
-                };
-                $.datepicker.setDefaults($.datepicker.regional['pt']);
-                $("#txtNascimento").datepicker({
-                    yearRange: "-70:+0",
-                    changeMonth: true,
-                    changeYear: true
-                });
-            });
-        </script>
-        
+
         <link rel="stylesheet" href="stylesheets/styles.css">
         <link rel="stylesheet" href="stylesheets/pygment_trac.css">
         <script src="javascripts/scale.fix.js"></script>
-        
+
         <script type="text/javascript" src="javascripts/zxml.js"></script>
         <script type="text/javascript" src="cadastro.js"></script>
 
@@ -40,47 +20,56 @@
         <!--[if lt IE 9]>
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        <script>
+            function ajax() {
+                //teste
+                $.post('cadastroexec.php',
+                        $('#form').serialize(),
+                        function(r) {
+                            if (r.inserido) {
+                                alert('Cadastrado com Sucesso!!!').onunload('window.location.href = "./perfil.php"');
+                                ;
+                            }
+                            else
+                                alert(r.erro);
+                        }, 'json');
+            }
+        </script>
     </head>
+
     <body>
-        <h1>Cadastro!</h1>
+        <h1 id="h1">Cadastro!</h1>
         <p>Por favor, preencha as informações a seguir.</p>
-        <form method="post" action="cadastro.php">
+        <form method="post" id="form">
             <table>
                 <tr>
                     <td><label for="txtNome">Nome:</label></td>
-                    <td><input type="text" id="txtNome" name="txtNome" /></td>
+                    <td><input type="text" id="txtNome" name="txtNome" /><label id="ErroNome" for="txtNome"></label></td>
                 </tr>
                 <tr>
                     <td><label for="txtEmail">E-mail:</label></td>
-                    <td><input type="text" id="txtEmail" name="txtEmail" /><img src="images/error.gif" alt="Error" id="imgErroEmail" style="display:none" /></td>
+                    <td><input type="email" id="txtEmail" name="txtEmail" placeholder="exemplo@email.com"/><label id="ErroEmail" for="txtEmail"></label></td>
                 </tr>
                 <tr>
                     <td><label for="txtUsername">Username:</label></td>
-                    <td><input type="text" id="txtUsername" name="txtUsername" /><img src="images/error.gif" alt="Error" id="imgErroUsername" style="display:none" /></td>
+                    <td><input type="text" id="txtUsername" name="txtUsername" /><label id="ErroUsername" for="txtUsername"></label></td>
                 </tr>
                 <tr>
                     <td><label for="txtSenha1">Senha:</label></td>
-                    <td><input type="text" id="txtSenha1" name="txtSenha1" /><img src="images/error.gif" alt="Error" id="imgErroUsername" style="display:none" /></td>
-                </tr>
-                <tr>
-                    <td><label for="txtSenha2">Senha:</label></td>
-                    <td><input type="text" id="txtSenha2" name="txtSenha2" /><img src="images/error.gif" alt="Error" id="imgErroSenha" style="display:none" /></td>
-                </tr>
-                <tr>
-                    <td><label for="txtNascimento">Data de nascimento:</label></td>
-                    <td><input type="text" id="txtNascimento" name="txtNascimento" /><img src="images/error.gif" alt="Error" id="imgErroNascimento" style="display:none" /> (dd/mm/yyyy)</td>
+                    <td><input type="password" id="txtSenha1" name="txtSenha1" /><label id="ErroSenha1" for="txtSenha1"></label></td>
                 </tr>
                 <tr>
                     <td><label for="selSexo">Sexo:</label></td>
                     <td>
                         <select id="selSexo" name="selSexo">
-                            <option>M</option>
-                            <option>F</option>
+                            <option value="M">M</option>
+                            <option value="F">F</option>
                         </select>
                     </td>
                 </tr>
             </table>
-            <input type="submit" id="btnCadastro" value="Cadastrar!" />
+            <input type="button" onclick="ajax();" id="btnCadastro" value="Cadastrar!" />
         </form>
+
     </body>
 </html>
