@@ -3,10 +3,8 @@
 require_once './classes/ConexaoBD.php';
 $userBD = new UsuarioBD();
 //print_r($_POST);
-
 //$divRet = $userBD->getUsuariosBanco('*', "user_nick LIKE '%{$_POST['q']}%'");
-$divRet = $userBD->getUsuariosBanco();
-$divRet = '';
+$userBD->getUsuariosBanco();
 while ($ret = $userBD->getArray()) {
     $divRet[] = $ret;
 }

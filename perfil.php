@@ -29,7 +29,6 @@ if (isset($_COOKIE['userBD'])) {
             });
 
             $(document).ready(function() {
-
                 $.getJSON('buscaUsuario.php', function(data) {
                     var cliente = [];
                     $(data).each(function(key, value) {
