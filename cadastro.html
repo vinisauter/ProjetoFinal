@@ -26,8 +26,10 @@
                 $.post('cadastroexec.php',
                         $('#form').serialize(),
                         function(r) {
-                            if (r.inserido)
-                                window.location.href = "./perfil.php";
+                            if (r.inserido) {
+                                alert('Cadastrado com Sucesso!!!').onunload('window.location.href = "./perfil.php"');
+                                ;
+                            }
                             else
                                 alert(r.erro);
                         }, 'json');
