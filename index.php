@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<?php
+if (isset($_COOKIE['userBD'])) {
+    header("Location: perfil.php");
+} 
+?>
 <html>
     <head>
         <meta charset="utf-8">
