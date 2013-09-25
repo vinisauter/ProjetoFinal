@@ -10,7 +10,7 @@ if ($_POST) {
     //user_nome, user_nick, user_email, user_senha, user_sexo
     
     if ($userBD->existeParametroEmBD('user_nick', $usuario)) {
-        $user = $userBD->getUsuarioBanco('*', "user_nick = '{$usuario}'", '', '', '1');        
+        $user = $userBD->getUsuarioBanco('*', "user_nick = '{$usuario}'");        
         //die($user->user_senha);
         if ($user->user_senha == $senha){
             setcookie('userBD', $userBD->geraXmlRetorno($user), time()+3600*24*1);
