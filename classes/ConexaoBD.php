@@ -181,13 +181,19 @@ class UsuarioBD extends ConexaoBD {
         return $this->fetchObject();
     }
 
-    function getUsuarioBanco($PARAM = '*', $WHERE = '', $ORDERBY = '', $GROUPBY = '', $LIMIT = '50') {
+    function getUsuarioBanco($PARAM = '*', $WHERE = '') {
+        $WHERE = ($WHERE != '') ? 'WHERE ' . $WHERE : '';
+        $this->query = "SELECT {$PARAM} FROM usuarios {$WHERE} LIMIT 0 ,1";
+        $this->execute($this->query);
+        return $this->fetchObject();
+    }
+    
+    function getUsuariosBanco($PARAM = '*', $WHERE = '', $ORDERBY = '', $GROUPBY = '', $LIMIT = '50') {
         $WHERE = ($WHERE != '') ? 'WHERE ' . $WHERE : '';
         $ORDERBY = ($ORDERBY != '') ? 'ORDER BY ' . $ORDERBY : '';
         $GROUPBY = ($GROUPBY != '') ? 'GROUP BY ' . $GROUPBY : '';
         $this->query = "SELECT {$PARAM} FROM usuarios {$WHERE} {$GROUPBY} {$ORDERBY} LIMIT 0 ,{$LIMIT}";
-        $this->execute($this->query);
-        return $this->fetchObject();
+        return $this->execute($this->query);
     }
 
     public function geraXmlRetorno($UsuarioBD) {
