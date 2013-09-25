@@ -120,24 +120,7 @@ if (isset($_COOKIE['userBD'])) {
                         }, 'json');
             }
             function mostraUsuarios(usuarios) {
-                var d = document;
-                var b = d.getElementsByTagName('body')[0];
-                var dvs = d.createElement("div");
-                var bt = d.createElement("button");
-                var t = d.createTextNode("Fechar");
-                var texto = d.createTextNode(usuarios);
-                dvs.appendChild(texto);
-                bt.appendChild(t);
-                dvs.appendChild(bt);
-                dvs.className = "test";
-                b.appendChild(dvs);
-                bt.onblur = function(e) {
-                    op(this.parentNode)
-                }
-                function op(t) {
-                    alert('onblur');
-                }
-
+                
             }
         
         </script>
